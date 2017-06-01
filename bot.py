@@ -18,14 +18,28 @@ except:
 	TOKEN = 'Manually set the API Token if youre not running through heroku or have not set vars in ENV'
 ###############################################################
 
+def getUsername():
+    mes = "Bem vindo danadinho(a)!"
+    return mes
+
 def parse_join(message):
     m = json.loads(message)
+    if (m['type'] == "channel_join"):
+        x = requests.get("https://slack.com/api/im.open?token="+TOKEN+"&user="+m["user"]["id"])
+        x = x.json()
+        x = x["channel"]["id"]
+        
+        if(x == "G5MD8B20L"):
+            novamensagem = getUsername()
+            xx = requests.post("https://slack.com/api/chat.postMessage?token="+TOKEN+"&channel="+x+"&text="+urllib.quote(novamensagem)+"&parse=full&as_user=true")
+
     if (m['type'] == "team_join"):
         x = requests.get("https://slack.com/api/im.open?token="+TOKEN+"&user="+m["user"]["id"])
         x = x.json()
         x = x["channel"]["id"]
-        #xx = requests.post("https://slack.com/api/chat.postMessage?token="+TOKEN+"&channel="+x+"&text="+urllib.quote(MESSAGE)+"&parse=full&as_user=true")
-        xx = requests.post("https://slack.com/api/chat.postMessage?token="+TOKEN+"&channel=G5MD8B20&text="+urllib.quote(MESSAGE)+"&parse=full&as_user=true")
+        novamensagem = getUsername()
+        //xx = requests.post("https://slack.com/api/chat.postMessage?token="+TOKEN+"&channel="+x+"&text="+urllib.quote(MESSAGE)+"&parse=full&as_user=true")
+        xx = requests.post("https://slack.com/api/chat.postMessage?token="+TOKEN+"&channel="+x+"&text="+urllib.quote(novamensagem)+"&parse=full&as_user=true")
 
         #DEBUG
         #print '\033[91m' + "HELLO SENT" + m["user"]["id"] + '\033[0m'
